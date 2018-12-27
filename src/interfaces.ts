@@ -55,7 +55,7 @@ export interface IDetails {
     time?: string;
     memory?: string;
     error?: string;
+    submitTime?: string;
+    remoteUser?: string;
     runID?: number;
 }
-
-export const continuesStatus = ["Pending", "Pending_Rejudging", "Compiling", "Running_&_Judging", "Waiting"];

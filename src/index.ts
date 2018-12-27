@@ -6,7 +6,7 @@ import { agent as createAgent } from "superagent";
 import { ISolution, JudgeFunction, Problem, Solution, SolutionResult } from "./interfaces";
 
 const MAX_SOURCE_SIZE = 16 * 1024 * 1024;
-const UPDATE_INTERVAL = 1000;
+const UPDATE_INTERVAL = 2000;
 
 const configPath = join(__dirname, "..", "config.json");
 const config = JSON.parse(readFileSync(configPath).toString());
@@ -87,12 +87,10 @@ const fetch = async (runID: number) => {
     const status = convertStatus(resultRow.childNodes[3].textContent.trim());
     const score = status === SolutionResult.Accepted ? 100 : 0;
     return {
-        result: {
-            details: {
-                runID: resultRow.childNodes[0].textContent,
-                remoteUser: resultRow.childNodes[1].textContent,
-                submitTime: resultRow.childNodes[8].textContent,
-            },
+        details: {
+            runID,
+            remoteUser: resultRow.childNodes[1].textContent,
+            submitTime: resultRow.childNodes[8].textContent,
             memory: resultRow.childNodes[4].textContent,
             time: resultRow.childNodes[5].textContent,
         },
