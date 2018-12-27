@@ -78,24 +78,35 @@ const convertStatus = (status) => {
     return interfaces_1.SolutionResult.OtherError;
 };
 const fetch = async (runID) => {
-    const url = `https://www.lydsy.com/JudgeOnline/status.php?&top=${runID}`;
-    const result = await agent.get(url);
-    const dom = new jsdom_1.JSDOM(result.text);
-    const resultTable = dom.window.document.querySelector('table[align="center"]');
-    const resultRow = resultTable.querySelector('tr[align="center"]');
-    const status = convertStatus(resultRow.childNodes[3].textContent.trim());
-    const score = status === interfaces_1.SolutionResult.Accepted ? 100 : 0;
-    return {
-        details: {
-            runID,
-            remoteUser: resultRow.childNodes[1].textContent,
-            submitTime: resultRow.childNodes[8].textContent,
-            memory: resultRow.childNodes[4].textContent,
-            time: resultRow.childNodes[5].textContent,
-        },
-        status,
-        score,
-    };
+    try {
+        const url = `https://www.lydsy.com/JudgeOnline/status.php?&top=${runID}`;
+        const result = await agent.get(url);
+        const dom = new jsdom_1.JSDOM(result.text);
+        const resultTable = dom.window.document.querySelector('table[align="center"]');
+        const resultRow = resultTable.querySelector('tr[align="center"]');
+        const status = convertStatus(resultRow.childNodes[3].textContent.trim());
+        const score = status === interfaces_1.SolutionResult.Accepted ? 100 : 0;
+        return {
+            details: {
+                runID,
+                remoteUser: resultRow.childNodes[1].textContent,
+                submitTime: resultRow.childNodes[8].textContent,
+                memory: resultRow.childNodes[4].textContent,
+                time: resultRow.childNodes[5].textContent,
+            },
+            status,
+            score,
+        };
+    }
+    catch (e) {
+        return {
+            details: {
+                error: e.message,
+            },
+            status: interfaces_1.SolutionResult.JudgementFailed,
+            score: 0,
+        };
+    }
 };
 const updateSolutionResults = async () => {
     for (const [runid, cb] of updateMap) {
