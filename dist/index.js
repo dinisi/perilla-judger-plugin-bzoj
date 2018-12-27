@@ -7,7 +7,7 @@ const path_1 = require("path");
 const superagent_1 = require("superagent");
 const interfaces_1 = require("./interfaces");
 const MAX_SOURCE_SIZE = 16 * 1024 * 1024;
-const UPDATE_INTERVAL = 1000;
+const UPDATE_INTERVAL = 2000;
 const configPath = path_1.join(__dirname, "..", "config.json");
 const config = JSON.parse(fs_1.readFileSync(configPath).toString());
 const agent = superagent_1.agent();
@@ -86,12 +86,10 @@ const fetch = async (runID) => {
     const status = convertStatus(resultRow.childNodes[3].textContent.trim());
     const score = status === interfaces_1.SolutionResult.Accepted ? 100 : 0;
     return {
-        result: {
-            details: {
-                runID: resultRow.childNodes[0].textContent,
-                remoteUser: resultRow.childNodes[1].textContent,
-                submitTime: resultRow.childNodes[8].textContent,
-            },
+        details: {
+            runID,
+            remoteUser: resultRow.childNodes[1].textContent,
+            submitTime: resultRow.childNodes[8].textContent,
             memory: resultRow.childNodes[4].textContent,
             time: resultRow.childNodes[5].textContent,
         },
@@ -138,9 +136,6 @@ const main = async (problem, solution, resolve, update) => {
                 }
                 else if (solution.language === "java") {
                     langcode = 3;
-                }
-                else if (solution.language === "python2") {
-                    langcode = 6;
                 }
                 if (langcode === null) {
                     return update({ status: interfaces_1.SolutionResult.JudgementFailed, score: 0, details: { error: "Language rejected" } });

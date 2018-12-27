@@ -21,6 +21,6 @@
     "tslint": "^5.12.0"
   },
   "scripts": {
-    "preversion": "tsc"
+    "preversion": "tsc && git add ."
   }
 }

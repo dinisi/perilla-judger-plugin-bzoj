@@ -24,5 +24,4 @@ exports.Solution = runtypes_1.Record({
     file: runtypes_1.Number,
     language: runtypes_1.String,
 });
-exports.continuesStatus = ["Pending", "Pending_Rejudging", "Compiling", "Running_&_Judging", "Waiting"];
 //# sourceMappingURL=interfaces.js.map
