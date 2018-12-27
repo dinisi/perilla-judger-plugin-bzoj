@@ -136,9 +136,10 @@ const main: JudgeFunction = async (problem, solution, resolve, update) => {
                     langcode = 2;
                 } else if (solution.language === "java") {
                     langcode = 3;
-                } else if (solution.language === "python2") {
-                    langcode = 6;
                 }
+                // } else if (solution.language === "python2") {
+                //     langcode = 6;
+                // }
                 if (langcode === null) {
                     return update({ status: SolutionResult.JudgementFailed, score: 0, details: { error: "Language rejected" } });
                 }
