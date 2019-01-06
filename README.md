@@ -13,7 +13,7 @@ config file example:
 problem config example:
 ```json
 {
-  id: 1000
+  "id": 1000
 }
 ```
 
